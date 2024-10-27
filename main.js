@@ -33,6 +33,10 @@ window.addEventListener("keyup", (event) => {
     if (event.code in keys) keys[event.code] = false;
 });
 
+// Initialize score and game over state
+let score = 0;
+let gameOver = false;
+
 // Function to draw the spaceship
 function drawSpaceship() {
     ctx.save(); // Save the current drawing state
@@ -130,25 +134,58 @@ function checkCollisions() {
 
         // Check for collision
         if (distance < spaceship.size + asteroid.size) {
-            console.log("Collision detected!"); // Placeholder for collision response
-            // For now, just log the collision. You can implement more actions later.
+            gameOver = true; // Set game over state
         }
     });
+}
+
+// Function to display the score on the canvas
+function drawScore() {
+    ctx.fillStyle = "white";
+    ctx.font = "20px Arial";
+    ctx.fillText(`Score: ${score}`, 10, 30);
 }
 
 // Main game loop
 function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
 
-    updateSpaceship();    // Update spaceship position
-    updateAsteroids();    // Update asteroid positions
-    checkCollisions();    // Check for collisions
+    if (!gameOver) {
+        updateSpaceship();    // Update spaceship position
+        updateAsteroids();    // Update asteroid positions
+        checkCollisions();    // Check for collisions
 
-    drawSpaceship();      // Draw spaceship
-    drawAsteroids();      // Draw asteroids
+        drawSpaceship();      // Draw spaceship
+        drawAsteroids();      // Draw asteroids
+
+        // Increase score over time
+        score += 1; // Increment score
+        drawScore(); // Draw score
+    } else {
+        ctx.fillStyle = "red";
+        ctx.font = "40px Arial";
+        ctx.fillText("Game Over", canvas.width / 2 - 100, canvas.height / 2);
+        ctx.font = "20px Arial";
+        ctx.fillText("Press R to Restart", canvas.width / 2 - 100, canvas.height / 2 + 40);
+    }
 
     requestAnimationFrame(gameLoop); // Call the loop again
 }
+
+// Event listener for restarting the game
+window.addEventListener("keydown", (event) => {
+    if (event.code === "KeyR" && gameOver) {
+        // Reset game state
+        score = 0;
+        gameOver = false;
+        asteroids.length = 0; // Clear the asteroids
+        for (let i = 0; i < 5; i++) {
+            createAsteroid(); // Create new asteroids
+        }
+        spaceship.x = canvas.width / 2; // Reset spaceship position
+        spaceship.y = canvas.height / 2;
+    }
+});
 
 // Start the game loop
 gameLoop();
