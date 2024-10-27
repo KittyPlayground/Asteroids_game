@@ -23,6 +23,7 @@ const keys = {
     ArrowLeft: false,
     ArrowRight: false,
     ArrowUp: false,
+    Space: false // For shooting
 };
 
 // Event listeners for keydown and keyup
@@ -36,6 +37,9 @@ window.addEventListener("keyup", (event) => {
 // Initialize score and game over state
 let score = 0;
 let gameOver = false;
+
+// Initialize bullets array
+const bullets = [];
 
 // Function to draw the spaceship
 function drawSpaceship() {
@@ -77,6 +81,12 @@ function updateSpaceship() {
     if (spaceship.x < 0) spaceship.x = canvas.width;
     if (spaceship.y > canvas.height) spaceship.y = 0;
     if (spaceship.y < 0) spaceship.y = canvas.height;
+
+    // Shooting bullets
+    if (keys.Space) {
+        shootBullet();
+        keys.Space = false; // Prevent multiple bullets from being shot at once
+    }
 }
 
 // Array to store all asteroids
@@ -112,7 +122,7 @@ function drawAsteroids() {
 
 // Function to update all asteroid positions
 function updateAsteroids() {
-    asteroids.forEach((asteroid) => {
+    asteroids.forEach((asteroid, index) => {
         // Move asteroid in the direction of its angle
         asteroid.x += Math.cos(asteroid.angle) * asteroid.speed;
         asteroid.y += Math.sin(asteroid.angle) * asteroid.speed;
@@ -122,6 +132,21 @@ function updateAsteroids() {
         if (asteroid.x < 0) asteroid.x = canvas.width;
         if (asteroid.y > canvas.height) asteroid.y = 0;
         if (asteroid.y < 0) asteroid.y = canvas.height;
+
+        // Check for bullet collisions
+        bullets.forEach((bullet, bulletIndex) => {
+            const dx = asteroid.x - bullet.x;
+            const dy = asteroid.y - bullet.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < asteroid.size) { // Collision detected
+                // Remove asteroid and bullet
+                asteroids.splice(index, 1);
+                bullets.splice(bulletIndex, 1);
+                score += 10; // Increase score
+                playExplosionSound(); // Play explosion sound
+            }
+        });
     });
 }
 
@@ -146,6 +171,59 @@ function drawScore() {
     ctx.fillText(`Score: ${score}`, 10, 30);
 }
 
+// Function to create a bullet
+function shootBullet() {
+    const bullet = {
+        x: spaceship.x,
+        y: spaceship.y,
+        angle: spaceship.angle,
+        speed: 5, // Speed of the bullet
+        size: 5 // Bullet size for collision detection
+    };
+    bullets.push(bullet);
+    playShootSound(); // Play shooting sound
+}
+
+// Function to update bullets positions
+function updateBullets() {
+    bullets.forEach((bullet, index) => {
+        bullet.x += Math.cos(bullet.angle) * bullet.speed;
+        bullet.y += Math.sin(bullet.angle) * bullet.speed;
+
+        // Remove bullets that are out of bounds
+        if (bullet.x < 0 || bullet.x > canvas.width || bullet.y < 0 || bullet.y > canvas.height) {
+            bullets.splice(index, 1);
+        }
+    });
+}
+
+// Function to draw all bullets
+function drawBullets() {
+    bullets.forEach((bullet) => {
+        ctx.beginPath();
+        ctx.arc(bullet.x, bullet.y, bullet.size, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.fillStyle = "yellow";
+        ctx.fill();
+    });
+}
+
+// Function to increase difficulty over time
+function increaseDifficulty() {
+    if (score % 50 === 0 && score > 0) {
+        for (let i = 0; i < 2; i++) {
+            createAsteroid();
+        }
+    }
+
+    // Increase speed of asteroids after certain score
+    if (score % 100 === 0 && score > 0) {
+        asteroids.forEach(asteroid => {
+            asteroid.speed += 0.5; // Increase asteroid speed
+        });
+    }
+}
+
 // Main game loop
 function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
@@ -153,10 +231,15 @@ function gameLoop() {
     if (!gameOver) {
         updateSpaceship();    // Update spaceship position
         updateAsteroids();    // Update asteroid positions
+        updateBullets();      // Update bullet positions
         checkCollisions();    // Check for collisions
 
         drawSpaceship();      // Draw spaceship
         drawAsteroids();      // Draw asteroids
+        drawBullets();        // Draw bullets
+
+        // Increase difficulty based on score
+        increaseDifficulty();
 
         // Increase score over time
         score += 1; // Increment score
@@ -178,14 +261,27 @@ window.addEventListener("keydown", (event) => {
         // Reset game state
         score = 0;
         gameOver = false;
-        asteroids.length = 0; // Clear the asteroids
+        asteroids.length = 0; // Clear asteroids array
         for (let i = 0; i < 5; i++) {
-            createAsteroid(); // Create new asteroids
+            createAsteroid(); // Create initial asteroids
         }
-        spaceship.x = canvas.width / 2; // Reset spaceship position
-        spaceship.y = canvas.height / 2;
+        bullets.length = 0; // Clear bullets array
     }
 });
+
+// Load sound effects
+const shootSound = new Audio('audio/gunshot1.mp3');
+const explosionSound = new Audio('audio/explosion.mp3');
+
+function playShootSound() {
+    shootSound.currentTime = 0; // Reset sound to start
+    shootSound.play(); // Play shooting sound
+}
+
+function playExplosionSound() {
+    explosionSound.currentTime = 0; // Reset sound to start
+    explosionSound.play(); // Play explosion sound
+}
 
 // Start the game loop
 gameLoop();
