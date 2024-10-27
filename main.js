@@ -1,4 +1,4 @@
-// Get canvas and context
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -43,7 +43,7 @@ const bullets = [];
 
 // Function to draw the spaceship
 function drawSpaceship() {
-    ctx.save(); // Save the current drawing state
+    ctx.save();
 
     // Translate and rotate the canvas to draw the spaceship
     ctx.translate(spaceship.x, spaceship.y);
@@ -51,14 +51,14 @@ function drawSpaceship() {
 
     // Draw a triangle for the spaceship
     ctx.beginPath();
-    ctx.moveTo(0, -10); // Tip of the spaceship
-    ctx.lineTo(5, 10);  // Bottom right of the spaceship
-    ctx.lineTo(-5, 10); // Bottom left of the spaceship
+    ctx.moveTo(0, -10);
+    ctx.lineTo(5, 10);
+    ctx.lineTo(-5, 10);
     ctx.closePath();
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "orange";
     ctx.fill();
 
-    ctx.restore(); // Restore the original drawing state
+    ctx.restore();
 }
 
 // Update spaceship position and angle based on controls
@@ -95,11 +95,11 @@ const asteroids = [];
 // Function to create a new asteroid
 function createAsteroid() {
     const asteroid = {
-        x: Math.random() * canvas.width,        // Random x position
-        y: Math.random() * canvas.height,       // Random y position
-        size: Math.random() * 20 + 20,          // Random size between 20 and 40
-        speed: Math.random() * 2 + 1,           // Random speed between 1 and 3
-        angle: Math.random() * Math.PI * 2      // Random direction in radians
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 20 + 20,
+        speed: Math.random() * 2 + 1,
+        angle: Math.random() * Math.PI * 2
     };
     asteroids.push(asteroid);
 }
@@ -229,21 +229,21 @@ function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
 
     if (!gameOver) {
-        updateSpaceship();    // Update spaceship position
-        updateAsteroids();    // Update asteroid positions
-        updateBullets();      // Update bullet positions
-        checkCollisions();    // Check for collisions
+        updateSpaceship();
+        updateAsteroids();
+        updateBullets();
+        checkCollisions();
 
-        drawSpaceship();      // Draw spaceship
-        drawAsteroids();      // Draw asteroids
-        drawBullets();        // Draw bullets
+        drawSpaceship();
+        drawAsteroids();
+        drawBullets();
 
         // Increase difficulty based on score
         increaseDifficulty();
 
         // Increase score over time
-        score += 1; // Increment score
-        drawScore(); // Draw score
+        score += 1;
+        drawScore();
     } else {
         ctx.fillStyle = "red";
         ctx.font = "40px Arial";
@@ -252,7 +252,7 @@ function gameLoop() {
         ctx.fillText("Press R to Restart", canvas.width / 2 - 100, canvas.height / 2 + 40);
     }
 
-    requestAnimationFrame(gameLoop); // Call the loop again
+    requestAnimationFrame(gameLoop);
 }
 
 // Event listener for restarting the game
@@ -261,11 +261,11 @@ window.addEventListener("keydown", (event) => {
         // Reset game state
         score = 0;
         gameOver = false;
-        asteroids.length = 0; // Clear asteroids array
+        asteroids.length = 0;
         for (let i = 0; i < 5; i++) {
             createAsteroid(); // Create initial asteroids
         }
-        bullets.length = 0; // Clear bullets array
+        bullets.length = 0;
     }
 });
 
@@ -274,14 +274,13 @@ const shootSound = new Audio('audio/gunshot1.mp3');
 const explosionSound = new Audio('audio/explosion.mp3');
 
 function playShootSound() {
-    shootSound.currentTime = 0; // Reset sound to start
-    shootSound.play(); // Play shooting sound
+    shootSound.currentTime = 0;
+    shootSound.play();
 }
 
 function playExplosionSound() {
-    explosionSound.currentTime = 0; // Reset sound to start
-    explosionSound.play(); // Play explosion sound
+    explosionSound.currentTime = 0;
+    explosionSound.play();
 }
 
-// Start the game loop
 gameLoop();
