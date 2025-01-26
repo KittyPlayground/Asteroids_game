@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asteroids Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="stars"></div>
+<div class="stars2"></div>
+<div class="stars3"></div>
+
+<main class="container">
+    <header class="game-header">
+        <h1 class="game-title">ASTEROIDS</h1>
+        <p class="game-subtitle">Navigate the cosmic chaos</p>
+    </header>
+
+    <div id="gameContainer" class="game-container">
+        <div id="menuScreen" class="menu-screen">
+            <nav class="menu">
+                <ul class="menu-list">
+                    <li><button class="menu-item" id="playButton">Play Now</button></li>
+                    <li><button class="menu-item" id="highScoresButton">High Scores</button></li>
+                    <li><button class="menu-item" id="instructionsButton">Instructions</button></li>
+                    <li><button class="menu-item" id="settingsButton">Settings</button></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div id="gameScreen" class="game-screen hidden">
+            <div class="game-overlay">
+                <div class="game-stats">
+                    <span class="score">Score: <span id="scoreValue">0</span></span>
+                    <span class="lives">Lives: <span id="livesValue">3</span></span>
+                </div>
+                <button id="pauseButton" class="pause-button">Pause</button>
+            </div>
+            <canvas id="gameCanvas"></canvas>
+        </div>
+
+        <div id="instructionsScreen" class="instructions-screen hidden">
+            <h2>How to Play</h2>
+            <div class="instructions-content">
+                <p>🚀 Arrow keys to move</p>
+                <p>💫 Space to shoot</p>
+                <p>🛡️ Collect power-ups</p>
+                <p>⚡ Avoid asteroids</p>
+            </div>
+            <p>created by Kawodya Arachchige</p>
+            <br>
+            <button class="menu-item back-button" id="backFromInstructions">Back to Menu</button>
+        </div>
+
+        <div id="gameOverScreen" class="game-over-screen hidden">
+            <h2>Game Over</h2>
+            <p class="final-score">Score: <span id="finalScoreValue">0</span></p>
+            <button class="menu-item" id="restartButton">Play Again</button>
+            <button class="menu-item back-button" id="backFromGameOver">Back to Menu</button>
+        </div>
+    </div>
+
+    <footer class="game-footer">
+        <p>© 2024 Asteroids Game. All rights reserved.</p>
+    </footer>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
