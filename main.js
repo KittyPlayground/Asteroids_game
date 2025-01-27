@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 const backbtn = document.getElementById("backButton");
 
 backbtn.addEventListener("click", () => {
-    window.location.href = "home.html";
+    window.location.href = "index.html";
 });
 
 const GAME_CONFIG = {
