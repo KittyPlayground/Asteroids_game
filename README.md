@@ -1,6 +1,4 @@
-# Welcome to the Asteroids Game! 🎮🚀
-
-[![Typing SVG](https://readme-typing-svg.herokuapp.com/?font=Righteous&size=35&center=true&vCenter=true&width=500&height=70&duration=4000&lines=Welcome+to+Asteroids+Game+🌌;+Navigate+through+the+cosmic+chaos+🚀;+Good+luck+and+have+fun+✨;&color=32CD32)](https://github.com/your-repo-link)
+[![Typing SVG](https://readme-typing-svg.herokuapp.com/?font=Righteous&size=35&center=true&vCenter=true&width=500&height=70&duration=4000&lines=Welcome+to+Asteroids+Game+🌌;Good+luck+and+have+fun+✨;&color=32CD32)](https://github.com/your-repo-link)
 
 ## Overview
 
