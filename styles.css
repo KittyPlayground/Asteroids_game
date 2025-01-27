@@ -271,3 +271,25 @@ body {
         font-size: 1rem;
     }
 }
+.astronaut {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 60%;
+    left: 10%;
+    background-image: url('assets/as.webp');
+    background-size: cover;
+    animation: astronaut-move 20s linear infinite;
+}
+
+@keyframes astronaut-move {
+    0% {
+        left: 10%;
+    }
+    50% {
+        left: 90%;
+    }
+    100% {
+        left: 10%;
+    }
+}

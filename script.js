@@ -11,6 +11,8 @@ const backFromInstructions = document.getElementById("backFromInstructions");
 const backFromGameOver = document.getElementById("backFromGameOver");
 const restartButton = document.getElementById("restartButton");
 
+const audio = document.getElementById('backgroundMusic');
+audio.volume = 0.7;
 
 function hideAllScreens() {
     menuScreen.classList.add("hidden");
